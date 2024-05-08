@@ -80,11 +80,10 @@ function GameController() {
 
   selection["a1"] = board[0][0];
 
-  const printBoard = () => {
+  function printBoard() {
     const currentBoard = board.map((row) => row.map((cell) => cell.getValue()));
     console.log(currentBoard);
-  };
-  printBoard();
+  }
 
   function getPlayerInput() {
     let playerSelection;
@@ -105,11 +104,16 @@ function GameController() {
     setMove(activePlayer, selection[getPlayerInput()]);
   }
 
-  setPlayerInput();
-
-  const switchPlayers = () => {
+  function switchPlayers() {
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
-  };
+    console.log(`${activePlayer.getName()}'s turn`);
+  }
+
+  printBoard();
+
+  setPlayerInput();
+  printBoard();
+  switchPlayers();
 }
 
 GameController();
