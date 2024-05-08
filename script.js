@@ -74,7 +74,11 @@ function GameController() {
   const c2 = board[2][1];
   const c3 = board[2][2];
 
-  const markedBoard = ["a1", "a2", "a3", "b1", "b2", "b3", "c1", "c2", "c3"];
+  const coordinates = ["a1", "a2", "a3", "b1", "b2", "b3", "c1", "c2", "c3"];
+
+  const selection = [];
+
+  selection["a1"] = board[0][0];
 
   const printBoard = () => {
     const currentBoard = board.map((row) => row.map((cell) => cell.getValue()));
@@ -83,20 +87,25 @@ function GameController() {
   printBoard();
 
   function getPlayerInput() {
+    let playerSelection;
+
     do {
-      let playerSelection = prompt("Enter square: ");
+      playerSelection = prompt("Enter square: ");
 
       function isUndefined(currentValue) {
         return currentValue !== playerSelection;
       }
-    } while (markedBoard.every(isUndefined));
+    } while (coordinates.every(isUndefined));
+
+    return playerSelection;
   }
 
-  function getActivePlayer() {
+  function setPlayerInput() {
     console.log(`${activePlayer.getName()}'s turn`);
-    getPlayerInput();
+    setMove(activePlayer, selection[getPlayerInput()]);
   }
-  getActivePlayer();
+
+  setPlayerInput();
 
   const switchPlayers = () => {
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
