@@ -71,10 +71,29 @@ function setX() {
   this.appendChild(icon);
 }
 
-function setO() {}
+function setO() {
+  const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  icon.classList.toggle("o");
+  icon.setAttribute("viewBox", "0 0 100 100");
+  icon.setAttribute("width", "115");
+
+  const ellipse = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "ellipse"
+  );
+  ellipse.classList.toggle("line");
+  ellipse.setAttributeNS(null, "rx", "30");
+  ellipse.setAttributeNS(null, "ry", "30");
+  ellipse.setAttributeNS(null, "cx", "50");
+  ellipse.setAttributeNS(null, "cy", "50");
+
+  icon.appendChild(ellipse);
+
+  this.appendChild(icon);
+}
 
 const testButton = document.querySelector(".testPush");
-testButton.addEventListener("click", setX);
+testButton.addEventListener("click", setO);
 
 function switchPlayer() {
   const activePlayer = document.querySelector(".active-player");
