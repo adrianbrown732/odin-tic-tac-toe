@@ -43,11 +43,47 @@ function CreatePlayer(name, value) {
   return { addMark, getName };
 }
 
-function setPlayer1() {
-  const name = prompt("Enter player name: ");
-  console.log(`Hello, ${name.toUpperCase()}!`);
-  return CreatePlayer(name, "X");
+function setX() {
+  const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  icon.classList.toggle("x");
+  icon.setAttribute("viewBox", "0 0 100 100");
+  icon.setAttribute("width", "115");
+
+  const rect1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+  rect1.classList.toggle("line");
+  rect1.classList.toggle("left");
+  rect1.setAttributeNS(null, "width", "80");
+  rect1.setAttributeNS(null, "height", "10");
+  rect1.setAttributeNS(null, "x", "10");
+  rect1.setAttributeNS(null, "y", "45");
+
+  const rect2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+  rect2.classList.toggle("line");
+  rect2.classList.toggle("right");
+  rect2.setAttributeNS(null, "width", "80");
+  rect2.setAttributeNS(null, "height", "10");
+  rect2.setAttributeNS(null, "x", "10");
+  rect2.setAttributeNS(null, "y", "45");
+
+  icon.appendChild(rect1);
+  icon.appendChild(rect2);
+
+  this.appendChild(icon);
 }
+
+function setO() {}
+
+const testButton = document.querySelector(".testPush");
+testButton.addEventListener("click", setX);
+
+function switchPlayer() {
+  const activePlayer = document.querySelector(".active-player");
+  activePlayer.classList.toggle("switch-player");
+}
+
+const button = document.querySelector("button");
+
+button.addEventListener("click", switchPlayer);
 
 function setPlayer2() {
   const name = prompt("Enter player name: ");
@@ -111,5 +147,3 @@ function GameController() {
   printBoard();
   switchPlayers();
 }
-
-GameController();

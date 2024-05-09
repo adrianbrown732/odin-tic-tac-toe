@@ -62,6 +62,7 @@ main > div {
   justify-content: center;
   background: var(--main-color);
   color: white;
+  padding: 1em;
 }
 
 main > div::before {
