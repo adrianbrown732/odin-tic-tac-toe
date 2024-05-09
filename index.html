@@ -4,9 +4,41 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <script src="/script.js" defer></script>
+    <!-- <script src="/script.js" defer></script> -->
 
     <title>Tic Tac Toe</title>
   </head>
-  <body></body>
+  <body>
+    <header>
+      <h1>tic tac toe</h1>
+      <div class="status-bar">
+        <p>player 1</p>
+        <div class="active-player"><div></div></div>
+        <p>player 2</p>
+      </div>
+    </header>
+
+    <main>
+      <div data-square=""></div>
+      <div data-square=""></div>
+      <div data-square="">
+        <svg viewBox="0 0 100 100" width="115">
+          <ellipse class="o line" rx="30" ry="30" cx="50" cy="50"></ellipse>
+        </svg>
+      </div>
+      <div data-square=""></div>
+      <div data-square="">
+        <svg class="x" viewBox="0 0 100 100" width="115">
+          <rect class="line left" width="80" height="10" x="10" y="45"></rect>
+          <rect class="line right" width="80" height="10" x="10" y="45"></rect>
+        </svg>
+      </div>
+      <div data-square=""></div>
+      <div data-square=""></div>
+      <div data-square=""></div>
+      <div data-square=""></div>
+    </main>
+
+    <div><button>switch player</button></div>
+  </body>
 </html>

@@ -22,23 +22,20 @@ function Cell(value) {
 
   const getPlayerName = () => markedBy;
   const getValue = () => value;
-  const showStatus = () => (isClosed ? "CLOSED" : "OPEN");
+  const getStatus = () => isClosed;
   const setValue = ([playerValue, playerMark]) => {
-    if (isClosed) {
-      console.log("ILLEGAL MOVE");
-      return;
-    }
     value = playerValue;
     markedBy = playerMark;
     isClosed = true;
+
     console.log(`${markedBy} takes square ${name}`);
   };
-  return { setValue, getPlayerName, getValue };
+  return { setValue, getPlayerName, getValue, getStatus };
 }
 
-const setMove = (player, location) => {
+function setMove(player, location) {
   location.setValue(player.addMark());
-};
+}
 
 function CreatePlayer(name, value) {
   const addMark = () => [value, name];
@@ -64,21 +61,19 @@ function GameController() {
 
   const board = GameBoard();
 
-  const a1 = board[0][0];
-  const a2 = board[0][1];
-  const a3 = board[0][2];
-  const b1 = board[1][0];
-  const b2 = board[1][1];
-  const b3 = board[1][2];
-  const c1 = board[2][0];
-  const c2 = board[2][1];
-  const c3 = board[2][2];
-
   const coordinates = ["a1", "a2", "a3", "b1", "b2", "b3", "c1", "c2", "c3"];
 
   const selection = [];
 
-  selection["a1"] = board[0][0];
+  selectio, (n["a1"] = board[0][0]);
+  selection["a2"] = board[0][1];
+  selection["a3"] = board[0][2];
+  selection["b1"] = board[1][0];
+  selection["b2"] = board[1][1];
+  selection["b3"] = board[1][2];
+  selection["c1"] = board[2][0];
+  selection["c2"] = board[2][1];
+  selection["c3"] = board[2][2];
 
   function printBoard() {
     const currentBoard = board.map((row) => row.map((cell) => cell.getValue()));
@@ -88,12 +83,10 @@ function GameController() {
   function getPlayerInput() {
     let playerSelection;
 
-    do {
-      playerSelection = prompt("Enter square: ");
+    const isUndefined = (currentValue) => currentValue !== playerSelection;
 
-      function isUndefined(currentValue) {
-        return currentValue !== playerSelection;
-      }
+    do {
+      playerSelection = prompt("Enter coordinate: ");
     } while (coordinates.every(isUndefined));
 
     return playerSelection;
@@ -106,10 +99,13 @@ function GameController() {
 
   function switchPlayers() {
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
-    console.log(`${activePlayer.getName()}'s turn`);
   }
 
   printBoard();
+
+  setPlayerInput();
+  printBoard();
+  switchPlayers();
 
   setPlayerInput();
   printBoard();
