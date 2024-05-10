@@ -5,6 +5,7 @@ html {
 body {
   --main-color: #262121;
   --white: #fff;
+  --green: hsl(96, 75%, 55%);
   --square-hover: #6d6868;
   --active-player: #e24444;
   --section-spacing: 35px;
