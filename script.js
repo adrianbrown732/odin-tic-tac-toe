@@ -2,16 +2,46 @@ function playTicTacToe() {
   const players = ["player1", "player2"];
   const squares = document.querySelectorAll("[data-square]");
   const button = document.querySelector("button");
+  const activeIconParent = document.querySelector(".active-player");
+  const activeIcon = document.querySelector(".active-player > div");
   let activePlayer = players[0];
+
+  const CreateSquare = (square) => {
+    const getStatus = () => {
+      console.log(square.getAttribute("data-square", "true"));
+      return square.getAttribute("data-square", "true");
+    };
+    return { getStatus };
+  };
+
+  const updatePlayer = () => {
+    activePlayer = activePlayer === players[0] ? players[1] : players[0];
+  };
+  const moveIcon = () => {
+    activeIconParent.classList.toggle("switch-player");
+  };
+  const fadeOutIcon = () => {
+    activeIcon.style.opacity = "0";
+  };
+  const fadeInIcon = () => {
+    activeIcon.style.opacity = "1";
+  };
 
   button.addEventListener("click", resetGame);
 
   squares.forEach((square) => {
     square.addEventListener("click", () => {
       if (square.getAttribute("data-square", "true")) return;
-      activePlayer === "player1"
-        ? square.appendChild(setX())
-        : square.appendChild(setO());
+
+      if (activePlayer === "player1") {
+        square.appendChild(setX());
+        square.setAttribute("data-icon", "1");
+        console.log(square.getAttribute("data-icon"));
+      } else {
+        square.appendChild(setO());
+        square.setAttribute("data-icon", "2");
+        console.log(square.getAttribute("data-icon"));
+      }
       square.setAttribute("data-square", "true");
     });
   });
@@ -77,12 +107,9 @@ function playTicTacToe() {
     return icon;
   }
 
-  let i = 1;
-
   function resetGame() {
     squares.forEach((square) => {
       if (square.getAttribute("data-square", "true")) {
-        const playerIcon = document.querySelector(".active-player");
         const icons = document.querySelectorAll("div > .icon");
 
         icons.forEach((icon) => {
@@ -97,17 +124,26 @@ function playTicTacToe() {
 
         if (activePlayer === players[1]) {
           activePlayer = players[0];
-          playerIcon.classList.remove("switch-player");
+          fadeOutIcon();
+
+          setTimeout(() => {
+            activeIconParent.classList.remove("switch-player");
+            fadeInIcon();
+          }, 200);
         }
       }
     });
   }
 
   function switchPlayer() {
-    const playerIcon = document.querySelector(".active-player");
+    fadeOutIcon();
 
-    playerIcon.classList.toggle("switch-player");
-    activePlayer = activePlayer === players[0] ? players[1] : players[0];
+    setTimeout(() => {
+      moveIcon();
+      fadeInIcon();
+    }, 200);
+
+    updatePlayer();
   }
 }
 
@@ -126,6 +162,13 @@ function GameBoard() {
       board[i].push(Cell(name));
     }
   }
+  return board;
+}
+
+const newBoard = CreateBoard();
+
+function CreateBoard() {
+  const board = [];
   return board;
 }
 

@@ -56,6 +56,7 @@ header h1 {
   width: 8px;
   height: 18px;
   background-color: var(--active-player);
+  transition: 200ms;
 }
 
 .icon {
