@@ -4,11 +4,12 @@ html {
 
 body {
   --main-color: #262121;
+  --white: #fff;
   --square-hover: #6d6868;
   --active-player: #e24444;
   --section-spacing: 35px;
 
-  width: 50%;
+  width: 630px;
   margin: 0 auto;
   padding: 0;
   text-align: center;
@@ -35,7 +36,6 @@ header h1 {
   display: flex;
   align-items: flex-start;
   padding-bottom: var(--section-spacing);
-  /*   border: 1px solid coral; */
 }
 
 .status-bar > p {
@@ -45,8 +45,7 @@ header h1 {
 .active-player {
   display: flex;
   flex: 1;
-  margin-inline: 0.5em;
-  /*   border: 1px solid purple; */
+  margin-inline: 0.75em;
 }
 
 .switch-player {
@@ -59,14 +58,18 @@ header h1 {
   background-color: var(--active-player);
 }
 
+.icon {
+  transition: 300ms;
+}
+
 main > div {
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--main-color);
-  color: white;
   padding: 1em;
   cursor: pointer;
+  transition: 200ms ease-out;
 }
 
 main > div::before {
@@ -90,12 +93,12 @@ main {
 }
 
 .x {
-  fill: white;
+  fill: var(--white);
 }
 
 .o {
   fill: transparent;
-  stroke: white;
+  stroke: var(--white);
   stroke-width: 10px;
 }
 
