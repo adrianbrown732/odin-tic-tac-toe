@@ -100,6 +100,7 @@ const players = ["player1", "player2"];
 let activePlayer = players[0];
 
 const squares = document.querySelectorAll("[data-square]");
+
 squares.forEach((square) => {
   square.addEventListener("click", () => {
     if (square.getAttribute("data-square", "true")) return;
@@ -109,6 +110,22 @@ squares.forEach((square) => {
     square.setAttribute("data-square", "true");
   });
 });
+
+const resetGame = () => {
+  squares.forEach((square) => {
+    if (square.getAttribute("data-square", "true")) {
+      const child = document.querySelector("div > svg");
+      const playerIcon = document.querySelector(".active-player");
+      square.removeChild(child);
+      square.setAttribute("data-square", "");
+
+      if (activePlayer === players[1]) {
+        activePlayer = players[0];
+        playerIcon.classList.remove("switch-player");
+      }
+    }
+  });
+};
 
 function setSquares(square) {
   activePlayer === "player1"
@@ -124,7 +141,7 @@ function switchPlayer() {
 
 const button = document.querySelector("button");
 
-button.addEventListener("click", switchPlayer);
+button.addEventListener("click", resetGame);
 
 function setPlayer2() {
   const name = prompt("Enter player name: ");
