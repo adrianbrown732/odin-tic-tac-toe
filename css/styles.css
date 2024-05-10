@@ -63,6 +63,7 @@ main > div {
   background: var(--main-color);
   color: white;
   padding: 1em;
+  cursor: pointer;
 }
 
 main > div::before {
@@ -101,4 +102,8 @@ main {
 
 .right {
   rotate: -45deg;
+}
+
+button {
+  margin-block: 2em;
 }
