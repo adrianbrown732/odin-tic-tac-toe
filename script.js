@@ -213,6 +213,7 @@ function playTicTacToe() {
               child.style.stroke = "var(--green)";
             });
           }
+          endGame();
         }
       }
     }
@@ -247,6 +248,7 @@ function playTicTacToe() {
               child.style.stroke = "var(--green)";
             });
           }
+          endGame();
         }
       }
     }
@@ -276,6 +278,7 @@ function playTicTacToe() {
             child.style.stroke = "var(--green)";
           });
         }
+        endGame();
       }
     }
 
@@ -302,6 +305,7 @@ function playTicTacToe() {
             child.style.stroke = "var(--green)";
           });
         }
+        endGame();
       }
     }
   }
@@ -317,7 +321,9 @@ function playTicTacToe() {
           icon.style.opacity = "0";
         });
 
-        square.removeAttribute("data-icon");
+        if (square.getAttribute("data-icon")) {
+          square.removeAttribute("data-icon");
+        }
 
         setTimeout(() => {
           const child = document.querySelector("div > .icon");
@@ -342,350 +348,11 @@ function playTicTacToe() {
 
   resetButton.addEventListener("click", resetGame);
 
-  function checkForWinnerX() {
-    const row1 = [squares[0], squares[1], squares[2]];
-
-    const winRow1 =
-      row1[0].getAttribute("data-icon") == "1" &&
-      row1[1].getAttribute("data-icon") == "1" &&
-      row1[2].getAttribute("data-icon") === "1"
-        ? true
-        : false;
-
-    if (winRow1) {
-      row1.forEach((cell) => {
-        cell.setAttribute("data-win", "true");
-      });
-
-      const children = document.querySelectorAll("[data-win='true'] > .icon");
-
-      children.forEach((child) => {
-        child.style.fill = "var(--green)";
-      });
-      endGame();
-    }
-
-    const row2 = [squares[3], squares[4], squares[5]];
-
-    const winRow2 =
-      row2[0].getAttribute("data-icon") == "1" &&
-      row2[1].getAttribute("data-icon") == "1" &&
-      row2[2].getAttribute("data-icon") === "1"
-        ? true
-        : false;
-
-    if (winRow2) {
-      row2.forEach((cell) => {
-        cell.setAttribute("data-win", "true");
-      });
-
-      const children = document.querySelectorAll("[data-win='true'] > .icon");
-
-      children.forEach((child) => {
-        child.style.fill = "var(--green)";
-      });
-    }
-
-    const row3 = [squares[6], squares[7], squares[8]];
-
-    const winRow3 =
-      row3[0].getAttribute("data-icon") == "1" &&
-      row3[1].getAttribute("data-icon") == "1" &&
-      row3[2].getAttribute("data-icon") === "1"
-        ? true
-        : false;
-
-    if (winRow3) {
-      row3.forEach((cell) => {
-        cell.setAttribute("data-win", "true");
-      });
-
-      const children = document.querySelectorAll("[data-win='true'] > .icon");
-
-      children.forEach((child) => {
-        child.style.fill = "var(--green)";
-      });
-    }
-
-    const col1 = [squares[0], squares[3], squares[6]];
-
-    const winCol1 =
-      col1[0].getAttribute("data-icon") == "1" &&
-      col1[1].getAttribute("data-icon") == "1" &&
-      col1[2].getAttribute("data-icon") === "1"
-        ? true
-        : false;
-
-    if (winCol1) {
-      col1.forEach((cell) => {
-        cell.setAttribute("data-win", "true");
-      });
-
-      const children = document.querySelectorAll("[data-win='true'] > .icon");
-
-      children.forEach((child) => {
-        child.style.fill = "var(--green)";
-      });
-    }
-
-    const col2 = [squares[1], squares[4], squares[7]];
-
-    const winCol2 =
-      col2[0].getAttribute("data-icon") == "1" &&
-      col2[1].getAttribute("data-icon") == "1" &&
-      col2[2].getAttribute("data-icon") === "1"
-        ? true
-        : false;
-
-    if (winCol2) {
-      col2.forEach((cell) => {
-        cell.setAttribute("data-win", "true");
-      });
-
-      const children = document.querySelectorAll("[data-win='true'] > .icon");
-
-      children.forEach((child) => {
-        child.style.fill = "var(--green)";
-      });
-    }
-
-    const col3 = [squares[2], squares[5], squares[8]];
-
-    const winCol3 =
-      col3[0].getAttribute("data-icon") == "1" &&
-      col3[1].getAttribute("data-icon") == "1" &&
-      col3[2].getAttribute("data-icon") === "1"
-        ? true
-        : false;
-
-    if (winCol3) {
-      col3.forEach((cell) => {
-        cell.setAttribute("data-win", "true");
-      });
-
-      const children = document.querySelectorAll("[data-win='true'] > .icon");
-
-      children.forEach((child) => {
-        child.style.fill = "var(--green)";
-      });
-    }
-
-    const diag1 = [squares[0], squares[4], squares[8]];
-
-    const winDiag1 =
-      diag1[0].getAttribute("data-icon") == "1" &&
-      diag1[1].getAttribute("data-icon") == "1" &&
-      diag1[2].getAttribute("data-icon") === "1"
-        ? true
-        : false;
-
-    if (winDiag1) {
-      diag1.forEach((cell) => {
-        cell.setAttribute("data-win", "true");
-      });
-
-      const children = document.querySelectorAll("[data-win='true'] > .icon");
-
-      children.forEach((child) => {
-        child.style.fill = "var(--green)";
-      });
-    }
-
-    const diag2 = [squares[2], squares[4], squares[6]];
-
-    const winDiag2 =
-      diag2[0].getAttribute("data-icon") == "1" &&
-      diag2[1].getAttribute("data-icon") == "1" &&
-      diag2[2].getAttribute("data-icon") === "1"
-        ? true
-        : false;
-
-    if (winDiag2) {
-      diag2.forEach((cell) => {
-        cell.setAttribute("data-win", "true");
-      });
-
-      const children = document.querySelectorAll("[data-win='true'] > .icon");
-
-      children.forEach((child) => {
-        child.style.fill = "var(--green)";
-      });
-    }
-  }
-
-  function checkForWinnerO() {
-    const row1 = [squares[0], squares[1], squares[2]];
-
-    const winRow1 =
-      row1[0].getAttribute("data-icon") == "2" &&
-      row1[1].getAttribute("data-icon") == "2" &&
-      row1[2].getAttribute("data-icon") === "2"
-        ? true
-        : false;
-
-    if (winRow1) {
-      row1.forEach((cell) => {
-        cell.setAttribute("data-win", "true");
-      });
-
-      const children = document.querySelectorAll("[data-win='true'] > .icon");
-
-      children.forEach((child) => {
-        child.style.stroke = "var(--green)";
-      });
-    }
-
-    const row2 = [squares[3], squares[4], squares[5]];
-
-    const winRow2 =
-      row2[0].getAttribute("data-icon") == "2" &&
-      row2[1].getAttribute("data-icon") == "2" &&
-      row2[2].getAttribute("data-icon") === "2"
-        ? true
-        : false;
-
-    if (winRow2) {
-      row2.forEach((cell) => {
-        cell.setAttribute("data-win", "true");
-      });
-
-      const children = document.querySelectorAll("[data-win='true'] > .icon");
-
-      children.forEach((child) => {
-        child.style.stroke = "var(--green)";
-      });
-    }
-
-    const row3 = [squares[6], squares[7], squares[8]];
-
-    const winRow3 =
-      row3[0].getAttribute("data-icon") == "2" &&
-      row3[1].getAttribute("data-icon") == "2" &&
-      row3[2].getAttribute("data-icon") === "2"
-        ? true
-        : false;
-
-    if (winRow3) {
-      row3.forEach((cell) => {
-        cell.setAttribute("data-win", "true");
-      });
-
-      const children = document.querySelectorAll("[data-win='true'] > .icon");
-
-      children.forEach((child) => {
-        child.style.stroke = "var(--green)";
-      });
-    }
-
-    const col1 = [squares[0], squares[3], squares[6]];
-
-    const winCol1 =
-      col1[0].getAttribute("data-icon") == "2" &&
-      col1[1].getAttribute("data-icon") == "2" &&
-      col1[2].getAttribute("data-icon") === "2"
-        ? true
-        : false;
-
-    if (winCol1) {
-      col1.forEach((cell) => {
-        cell.setAttribute("data-win", "true");
-      });
-
-      const children = document.querySelectorAll("[data-win='true'] > .icon");
-
-      children.forEach((child) => {
-        child.style.stroke = "var(--green)";
-      });
-    }
-
-    const col2 = [squares[1], squares[4], squares[7]];
-
-    const winCol2 =
-      col2[0].getAttribute("data-icon") == "2" &&
-      col2[1].getAttribute("data-icon") == "2" &&
-      col2[2].getAttribute("data-icon") === "2"
-        ? true
-        : false;
-
-    if (winCol2) {
-      col2.forEach((cell) => {
-        cell.setAttribute("data-win", "true");
-      });
-
-      const children = document.querySelectorAll("[data-win='true'] > .icon");
-
-      children.forEach((child) => {
-        child.style.stroke = "var(--green)";
-      });
-    }
-
-    const col3 = [squares[2], squares[5], squares[8]];
-
-    const winCol3 =
-      col3[0].getAttribute("data-icon") == "2" &&
-      col3[1].getAttribute("data-icon") == "2" &&
-      col3[2].getAttribute("data-icon") === "2"
-        ? true
-        : false;
-
-    if (winCol3) {
-      col3.forEach((cell) => {
-        cell.setAttribute("data-win", "true");
-      });
-
-      const children = document.querySelectorAll("[data-win='true'] > .icon");
-
-      children.forEach((child) => {
-        child.style.stroke = "var(--green)";
-      });
-    }
-
-    const diag1 = [squares[0], squares[4], squares[8]];
-
-    const winDiag1 =
-      diag1[0].getAttribute("data-icon") == "2" &&
-      diag1[1].getAttribute("data-icon") == "2" &&
-      diag1[2].getAttribute("data-icon") === "2"
-        ? true
-        : false;
-
-    if (winDiag1) {
-      diag1.forEach((cell) => {
-        cell.setAttribute("data-win", "true");
-      });
-
-      const children = document.querySelectorAll("[data-win='true'] > .icon");
-
-      children.forEach((child) => {
-        child.style.stroke = "var(--green)";
-      });
-    }
-
-    const diag2 = [squares[2], squares[4], squares[6]];
-
-    const winDiag2 =
-      diag2[0].getAttribute("data-icon") == "2" &&
-      diag2[1].getAttribute("data-icon") == "2" &&
-      diag2[2].getAttribute("data-icon") === "2"
-        ? true
-        : false;
-
-    if (winDiag2) {
-      diag2.forEach((cell) => {
-        cell.setAttribute("data-win", "true");
-      });
-
-      const children = document.querySelectorAll("[data-win='true'] > .icon");
-
-      children.forEach((child) => {
-        child.style.stroke = "var(--green)";
-      });
-    }
-  }
+  //   End game
 
   function endGame() {
     squares.forEach((square) => {
-      square.setAttribute("data-square", "true");
+      square.setAttribute("data-square-closed", "true");
     });
   }
 }
