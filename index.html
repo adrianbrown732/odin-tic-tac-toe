@@ -16,9 +16,11 @@
     <header>
       <h1>tic tac toe</h1>
       <div class="status-bar">
-        <p data-player-name="player1">player 1</p>
-        <div class="active-player"><div></div></div>
-        <p data-player-name="player2">player 2</p>
+        <p data-player-name="player1" class="player1">player 1</p>
+        <div class="status-icon-bar">
+          <div class="status-icon move-left"></div>
+        </div>
+        <p data-player-name="player2" class="player2">player 2</p>
       </div>
     </header>
 
@@ -44,7 +46,7 @@
     </main>
 
     <div><button class="reset">reset</button></div>
-    <div><button data-button>player1 name</button></div>
-    <div><button class="player2">player2 name</button></div>
+    <div><button data-button="player1">player1 name</button></div>
+    <div><button data-button="player2">player2 name</button></div>
   </body>
 </html>

@@ -9,6 +9,7 @@ body {
   --square-hover: #6d6868;
   --active-player: #e24444;
   --section-spacing: 35px;
+  --status-bar: -15px;
 
   width: 630px;
   margin: 0 auto;
@@ -34,30 +35,37 @@ header h1 {
 }
 
 .status-bar {
+  position: relative;
   display: flex;
+  justify-content: space-between;
   align-items: flex-start;
   padding-bottom: var(--section-spacing);
+  /* border: 1px solid blue; */
 }
 
 .status-bar > p {
   margin: 0;
 }
 
-.active-player {
-  display: flex;
-  flex: 1;
-  margin-inline: 0.75em;
+.status-icon-bar {
+  position: absolute;
+  width: 100%;
 }
 
-.switch-player {
-  justify-content: flex-end;
-}
-
-.active-player div {
+.status-icon {
+  position: absolute;
   width: 8px;
   height: 18px;
   background-color: var(--active-player);
   transition: 200ms;
+}
+
+.move-left {
+  left: var(--status-bar);
+}
+
+.move-right {
+  right: var(--status-bar);
 }
 
 .icon {
