@@ -187,8 +187,9 @@ function playTicTacToe() {
       if (squareGrid[i][0].getAttribute("data-square-closed", "true")) {
         if (
           squareGrid[i][0].getAttribute("data-icon") ===
-          (squareGrid[i][1].getAttribute("data-icon") &&
-            squareGrid[i][2].getAttribute("data-icon"))
+            squareGrid[i][1].getAttribute("data-icon") &&
+          squareGrid[i][0].getAttribute("data-icon") ===
+            squareGrid[i][2].getAttribute("data-icon")
         ) {
           for (let j = 0; j < 3; j++) {
             squareGrid[i][0].setAttribute("data-win", "true");
@@ -220,8 +221,9 @@ function playTicTacToe() {
       if (squareGrid[0][i].getAttribute("data-square-closed", "true")) {
         if (
           squareGrid[0][i].getAttribute("data-icon") ===
-          (squareGrid[1][i].getAttribute("data-icon") &&
-            squareGrid[2][i].getAttribute("data-icon"))
+            squareGrid[1][i].getAttribute("data-icon") &&
+          squareGrid[0][i].getAttribute("data-icon") ===
+            squareGrid[2][i].getAttribute("data-icon")
         ) {
           for (let j = 0; j < 3; j++) {
             squareGrid[0][i].setAttribute("data-win", "true");
@@ -252,8 +254,9 @@ function playTicTacToe() {
     if (squareGrid[0][0].getAttribute("data-square-closed", "true")) {
       if (
         squareGrid[0][0].getAttribute("data-icon") ===
-        (squareGrid[1][1].getAttribute("data-icon") &&
-          squareGrid[2][2].getAttribute("data-icon"))
+          squareGrid[1][1].getAttribute("data-icon") &&
+        squareGrid[0][0].getAttribute("data-icon") ===
+          squareGrid[2][2].getAttribute("data-icon")
       ) {
         squareGrid[0][0].setAttribute("data-win", "true");
         squareGrid[1][1].setAttribute("data-win", "true");
@@ -277,8 +280,9 @@ function playTicTacToe() {
     if (squareGrid[0][2].getAttribute("data-square-closed", "true")) {
       if (
         squareGrid[0][2].getAttribute("data-icon") ===
-        (squareGrid[1][1].getAttribute("data-icon") &&
-          squareGrid[2][0].getAttribute("data-icon"))
+          squareGrid[1][1].getAttribute("data-icon") &&
+        squareGrid[0][2].getAttribute("data-icon") ===
+          squareGrid[2][0].getAttribute("data-icon")
       ) {
         squareGrid[0][2].setAttribute("data-win", "true");
         squareGrid[1][1].setAttribute("data-win", "true");
@@ -689,48 +693,4 @@ function playTicTacToe() {
   }
 }
 
-function GameBoard() {
-  const rows = 3;
-  const columns = 3;
-  const cellRow = ["a", "b", "c"];
-  const board = [];
-
-  for (let i = 0; i < rows; i++) {
-    board[i] = [];
-    for (let j = 0; j < columns; j++) {
-      const name = `${cellRow[i]}${j + 1}`;
-      board[i].push(Cell(name));
-    }
-  }
-  return board;
-}
-
-const newBoard = CreateBoard();
-
-function CreateBoard() {
-  const board = [];
-  return board;
-}
-
-function Cell(value) {
-  const name = value;
-
-  let isClosed = false;
-  let markedBy;
-
-  const getPlayerName = () => markedBy;
-  const getValue = () => value;
-  const getStatus = () => isClosed;
-  const setValue = ([playerValue, playerMark]) => {
-    value = playerValue;
-    markedBy = playerMark;
-    isClosed = true;
-
-    console.log(`${markedBy} takes square ${name}`);
-  };
-  return { setValue, getPlayerName, getValue, getStatus };
-}
-
-function setMove(player, location) {
-  location.setValue(player.addMark());
-}
+playTicTacToe();
