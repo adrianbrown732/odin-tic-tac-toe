@@ -57,33 +57,35 @@ function playTicTacToe() {
 
   const statusIcon = document.querySelector(".status-icon");
 
+  const classes = statusIcon.classList;
+
   const fadeOutIcon = () => {
     statusIcon.style.opacity = "0";
   };
+
   const fadeInIcon = () => {
     statusIcon.style.opacity = "1";
   };
 
-  const toggleLeft = () => {
+  const moveRight = () => {
     fadeOutIcon();
     setTimeout(() => {
-      statusIcon.classList.toggle("move-left");
+      classes.replace("move-left", "move-right");
       fadeInIcon();
     }, 200);
   };
-  const toggleRight = () => {
+
+  const moveLeft = () => {
     fadeOutIcon();
     setTimeout(() => {
-      statusIcon.classList.toggle("move-right");
+      classes.replace("move-right", "move-left");
       fadeInIcon();
     }, 200);
   };
 
   const switchPlayer = () => {
+    activePlayer.getPlayerNumber() === 1 ? moveRight() : moveLeft();
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
-
-    toggleLeft();
-    toggleRight();
   };
 
   // Squares control
@@ -328,14 +330,9 @@ function playTicTacToe() {
           });
         }, 200);
 
-        if (activePlayer === players[1]) {
+        if (activePlayer.getPlayerNumber() === 2) {
           activePlayer = players[0];
-          fadeOutIcon();
-
-          setTimeout(() => {
-            activeIconParent.classList.remove("switch-player");
-            fadeInIcon();
-          }, 200);
+          moveLeft();
         }
       }
     });
