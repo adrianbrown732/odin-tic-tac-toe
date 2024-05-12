@@ -13,6 +13,22 @@ function CreatePlayer(value) {
   return { getValue, getPlayerNumber, setName };
 }
 
+function CreateGrid(array) {
+  let index = 0;
+  const board = [];
+  const rows = 3;
+  const columns = 3;
+
+  for (let i = 0; i < rows; i++) {
+    board[i] = [];
+    for (let j = 0; j < columns; j++) {
+      board[i].push(array[index]);
+      index++;
+    }
+  }
+  return board;
+}
+
 function playTicTacToe() {
   // Set players
 
@@ -28,7 +44,7 @@ function playTicTacToe() {
     players[1].setName();
   });
 
-  //   Set active player
+  //   Active player control
 
   let activePlayer = players[0];
 
@@ -43,17 +59,9 @@ function playTicTacToe() {
     }, 200);
   };
 
-  // Active player moves
+  // Set squares
 
   const squares = document.querySelectorAll("[data-square]");
-
-  const clearSquares = () => {
-    squares.forEach((square) => {
-      square.removeAttribute("data-square-closed");
-    });
-  };
-
-  // Set squares
 
   squares.forEach((square) => {
     square.addEventListener("click", () => {
@@ -71,6 +79,14 @@ function playTicTacToe() {
       checkForWin();
     });
   });
+
+  const squareGrid = CreateGrid(squares);
+
+  const clearSquares = () => {
+    squares.forEach((square) => {
+      square.removeAttribute("data-square-closed");
+    });
+  };
 
   function setX() {
     const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -134,21 +150,29 @@ function playTicTacToe() {
   }
 
   function checkForWin() {
-    if (squares[0].getAttribute("data-square-closed", "true")) {
-      if (
-        squares[0].getAttribute("data-icon") ===
-        (squares[1].getAttribute("data-icon") &&
-          squares[2].getAttribute("data-icon"))
-      ) {
-        squares[0].setAttribute("data-win", "true");
-        squares[1].setAttribute("data-win", "true");
-        squares[2].setAttribute("data-win", "true");
+    // Check winning rows
 
-        const children = document.querySelectorAll("[data-win='true'] > .icon");
+    for (let i = 0; i < 3; i++) {
+      if (squareGrid[i][0].getAttribute("data-square-closed", "true")) {
+        if (
+          squareGrid[i][0].getAttribute("data-icon") ===
+          (squareGrid[i][1].getAttribute("data-icon") &&
+            squareGrid[i][2].getAttribute("data-icon"))
+        ) {
+          for (let j = 0; j < 3; j++) {
+            squareGrid[i][0].setAttribute("data-win", "true");
+            squareGrid[i][1].setAttribute("data-win", "true");
+            squareGrid[i][2].setAttribute("data-win", "true");
+          }
 
-        children.forEach((child) => {
-          child.style.fill = "var(--green)";
-        });
+          const children = document.querySelectorAll(
+            "[data-win='true'] > .icon"
+          );
+
+          children.forEach((child) => {
+            child.style.fill = "var(--green)";
+          });
+        }
       }
     }
   }
