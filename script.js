@@ -1,48 +1,69 @@
+function CreatePlayer(value) {
+  const playerName = `player${value}`;
+  const player = document.querySelector(`[data-player-name="${playerName}"]`);
+
+  const getValue = () => value;
+  const getPlayerNumber = () => value;
+  const setName = () => {
+    if (player.getAttribute("data-name-set")) return;
+    player.textContent = prompt(`Enter Player ${value} name: `);
+    player.setAttribute("data-name-set", "true");
+  };
+
+  return { getValue, getPlayerNumber, setName };
+}
+
 function playTicTacToe() {
-  const players = ["player1", "player2"];
-  const squares = document.querySelectorAll("[data-square]");
-  const resetButton = document.querySelector(".reset");
-  const activeIconParent = document.querySelector(".active-player");
-  const activeIcon = document.querySelector(".active-player > div");
+  // Set players
+  const players = [];
+  const button = document.querySelector("[data-button]");
+
+  for (let i = 0; i < 2; i++) {
+    players[i] = CreatePlayer(i + 1);
+  }
+
+  button.addEventListener("click", () => {
+    players[0].setName();
+    players[1].setName();
+  });
+
+  //   Set active player
   let activePlayer = players[0];
 
-  const CreateSquare = (square) => {
-    const getStatus = () => {
-      console.log(square.getAttribute("data-square", "true"));
-      return square.getAttribute("data-square", "true");
-    };
-    return { getStatus };
-  };
-
-  const updatePlayer = () => {
+  const switchPlayer = () => {
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
-  };
-  const moveIcon = () => {
-    activeIconParent.classList.toggle("switch-player");
-  };
-  const fadeOutIcon = () => {
-    activeIcon.style.opacity = "0";
-  };
-  const fadeInIcon = () => {
-    activeIcon.style.opacity = "1";
+
+    fadeOutIcon();
+
+    setTimeout(() => {
+      moveIcon();
+      fadeInIcon();
+    }, 200);
   };
 
-  resetButton.addEventListener("click", resetGame);
+  // Active player moves
+  const squares = document.querySelectorAll("[data-square]");
+
+  const clearSquares = () => {
+    squares.forEach((square) => {
+      square.removeAttribute("data-square-closed");
+    });
+  };
 
   squares.forEach((square) => {
     square.addEventListener("click", () => {
-      if (square.getAttribute("data-square", "true")) return;
+      if (square.getAttribute("data-square-closed", "true")) return;
 
-      if (activePlayer === "player1") {
+      if (activePlayer.getPlayerNumber() === 1) {
         square.appendChild(setX());
-        square.setAttribute("data-icon", "1");
       } else {
         square.appendChild(setO());
-        square.setAttribute("data-icon", "2");
       }
-      square.setAttribute("data-square", "true");
 
-      checkForWinnerX();
+      square.setAttribute("data-icon", activePlayer.getValue());
+      square.setAttribute("data-square-closed", "true");
+
+      checkForWin();
     });
   });
 
@@ -107,6 +128,43 @@ function playTicTacToe() {
     return icon;
   }
 
+  function checkForWin() {
+    if (squares[0].getAttribute("data-square-closed", "true")) {
+      if (
+        squares[0].getAttribute("data-icon") ===
+        (squares[1].getAttribute("data-icon") &&
+          squares[2].getAttribute("data-icon"))
+      ) {
+        squares[0].setAttribute("data-win", "true");
+        squares[1].setAttribute("data-win", "true");
+        squares[2].setAttribute("data-win", "true");
+
+        const children = document.querySelectorAll("[data-win='true'] > .icon");
+
+        children.forEach((child) => {
+          child.style.fill = "var(--green)";
+        });
+      }
+    }
+  }
+
+  //   const players = ["player1", "player2"];
+  const resetButton = document.querySelector(".reset");
+  const activeIconParent = document.querySelector(".active-player");
+  const activeIcon = document.querySelector(".active-player > div");
+
+  const moveIcon = () => {
+    activeIconParent.classList.toggle("switch-player");
+  };
+  const fadeOutIcon = () => {
+    activeIcon.style.opacity = "0";
+  };
+  const fadeInIcon = () => {
+    activeIcon.style.opacity = "1";
+  };
+
+  resetButton.addEventListener("click", resetGame);
+
   function checkForWinnerX() {
     const row1 = [squares[0], squares[1], squares[2]];
 
@@ -127,6 +185,7 @@ function playTicTacToe() {
       children.forEach((child) => {
         child.style.fill = "var(--green)";
       });
+      endGame();
     }
 
     const row2 = [squares[3], squares[4], squares[5]];
@@ -275,14 +334,176 @@ function playTicTacToe() {
         child.style.fill = "var(--green)";
       });
     }
+  }
 
-    console.log(`winRow1: ${winRow1}`);
-    // console.log(`winRow2: ${winRow2}`);
-    // console.log(`winRow3: ${winRow3}`);
+  function checkForWinnerO() {
+    const row1 = [squares[0], squares[1], squares[2]];
 
-    // console.log(`winCol1: ${winCol1}`);
-    // console.log(`winCol2: ${winCol2}`);
-    // console.log(`winCol3: ${winCol3}`);
+    const winRow1 =
+      row1[0].getAttribute("data-icon") == "2" &&
+      row1[1].getAttribute("data-icon") == "2" &&
+      row1[2].getAttribute("data-icon") === "2"
+        ? true
+        : false;
+
+    if (winRow1) {
+      row1.forEach((cell) => {
+        cell.setAttribute("data-win", "true");
+      });
+
+      const children = document.querySelectorAll("[data-win='true'] > .icon");
+
+      children.forEach((child) => {
+        child.style.stroke = "var(--green)";
+      });
+    }
+
+    const row2 = [squares[3], squares[4], squares[5]];
+
+    const winRow2 =
+      row2[0].getAttribute("data-icon") == "2" &&
+      row2[1].getAttribute("data-icon") == "2" &&
+      row2[2].getAttribute("data-icon") === "2"
+        ? true
+        : false;
+
+    if (winRow2) {
+      row2.forEach((cell) => {
+        cell.setAttribute("data-win", "true");
+      });
+
+      const children = document.querySelectorAll("[data-win='true'] > .icon");
+
+      children.forEach((child) => {
+        child.style.stroke = "var(--green)";
+      });
+    }
+
+    const row3 = [squares[6], squares[7], squares[8]];
+
+    const winRow3 =
+      row3[0].getAttribute("data-icon") == "2" &&
+      row3[1].getAttribute("data-icon") == "2" &&
+      row3[2].getAttribute("data-icon") === "2"
+        ? true
+        : false;
+
+    if (winRow3) {
+      row3.forEach((cell) => {
+        cell.setAttribute("data-win", "true");
+      });
+
+      const children = document.querySelectorAll("[data-win='true'] > .icon");
+
+      children.forEach((child) => {
+        child.style.stroke = "var(--green)";
+      });
+    }
+
+    const col1 = [squares[0], squares[3], squares[6]];
+
+    const winCol1 =
+      col1[0].getAttribute("data-icon") == "2" &&
+      col1[1].getAttribute("data-icon") == "2" &&
+      col1[2].getAttribute("data-icon") === "2"
+        ? true
+        : false;
+
+    if (winCol1) {
+      col1.forEach((cell) => {
+        cell.setAttribute("data-win", "true");
+      });
+
+      const children = document.querySelectorAll("[data-win='true'] > .icon");
+
+      children.forEach((child) => {
+        child.style.stroke = "var(--green)";
+      });
+    }
+
+    const col2 = [squares[1], squares[4], squares[7]];
+
+    const winCol2 =
+      col2[0].getAttribute("data-icon") == "2" &&
+      col2[1].getAttribute("data-icon") == "2" &&
+      col2[2].getAttribute("data-icon") === "2"
+        ? true
+        : false;
+
+    if (winCol2) {
+      col2.forEach((cell) => {
+        cell.setAttribute("data-win", "true");
+      });
+
+      const children = document.querySelectorAll("[data-win='true'] > .icon");
+
+      children.forEach((child) => {
+        child.style.stroke = "var(--green)";
+      });
+    }
+
+    const col3 = [squares[2], squares[5], squares[8]];
+
+    const winCol3 =
+      col3[0].getAttribute("data-icon") == "2" &&
+      col3[1].getAttribute("data-icon") == "2" &&
+      col3[2].getAttribute("data-icon") === "2"
+        ? true
+        : false;
+
+    if (winCol3) {
+      col3.forEach((cell) => {
+        cell.setAttribute("data-win", "true");
+      });
+
+      const children = document.querySelectorAll("[data-win='true'] > .icon");
+
+      children.forEach((child) => {
+        child.style.stroke = "var(--green)";
+      });
+    }
+
+    const diag1 = [squares[0], squares[4], squares[8]];
+
+    const winDiag1 =
+      diag1[0].getAttribute("data-icon") == "2" &&
+      diag1[1].getAttribute("data-icon") == "2" &&
+      diag1[2].getAttribute("data-icon") === "2"
+        ? true
+        : false;
+
+    if (winDiag1) {
+      diag1.forEach((cell) => {
+        cell.setAttribute("data-win", "true");
+      });
+
+      const children = document.querySelectorAll("[data-win='true'] > .icon");
+
+      children.forEach((child) => {
+        child.style.stroke = "var(--green)";
+      });
+    }
+
+    const diag2 = [squares[2], squares[4], squares[6]];
+
+    const winDiag2 =
+      diag2[0].getAttribute("data-icon") == "2" &&
+      diag2[1].getAttribute("data-icon") == "2" &&
+      diag2[2].getAttribute("data-icon") === "2"
+        ? true
+        : false;
+
+    if (winDiag2) {
+      diag2.forEach((cell) => {
+        cell.setAttribute("data-win", "true");
+      });
+
+      const children = document.querySelectorAll("[data-win='true'] > .icon");
+
+      children.forEach((child) => {
+        child.style.stroke = "var(--green)";
+      });
+    }
   }
 
   function resetGame() {
@@ -320,19 +541,12 @@ function playTicTacToe() {
     });
   }
 
-  function switchPlayer() {
-    fadeOutIcon();
-
-    setTimeout(() => {
-      moveIcon();
-      fadeInIcon();
-    }, 200);
-
-    updatePlayer();
+  function endGame() {
+    squares.forEach((square) => {
+      square.setAttribute("data-square", "true");
+    });
   }
 }
-
-playTicTacToe();
 
 function GameBoard() {
   const rows = 3;
@@ -378,10 +592,4 @@ function Cell(value) {
 
 function setMove(player, location) {
   location.setValue(player.addMark());
-}
-
-function CreatePlayer(name, value) {
-  const addMark = () => [value, name];
-  const getName = () => name;
-  return { addMark, getName };
 }

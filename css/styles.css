@@ -84,7 +84,7 @@ main > div:hover {
   background: var(--square-hover);
 }
 
-main > div:hover[data-square="true"] {
+main > div:hover[data-square-closed="true"] {
   background: var(--main-color);
 }
 
