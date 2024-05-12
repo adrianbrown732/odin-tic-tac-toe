@@ -15,6 +15,7 @@ function CreatePlayer(value) {
 
 function playTicTacToe() {
   // Set players
+
   const players = [];
   const button = document.querySelector("[data-button]");
 
@@ -28,6 +29,7 @@ function playTicTacToe() {
   });
 
   //   Set active player
+
   let activePlayer = players[0];
 
   const switchPlayer = () => {
@@ -42,6 +44,7 @@ function playTicTacToe() {
   };
 
   // Active player moves
+
   const squares = document.querySelectorAll("[data-square]");
 
   const clearSquares = () => {
@@ -49,6 +52,8 @@ function playTicTacToe() {
       square.removeAttribute("data-square-closed");
     });
   };
+
+  // Set squares
 
   squares.forEach((square) => {
     square.addEventListener("click", () => {
