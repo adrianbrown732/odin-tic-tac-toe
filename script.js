@@ -48,12 +48,6 @@ function setSquares(array) {
     for (let j = 0; j < cols; j++) {
       array[index].setAttribute("data-row", `${i}`);
       array[index].setAttribute("data-col", `${j}`);
-
-      //   console.log(`Square: ${index}`);
-      //   console.log(`Row: ${array[index].getAttribute("data-row")}`);
-      //   console.log(`Column: ${array[index].getAttribute("data-col")}`);
-      //   console.log("");
-
       index++;
     }
   }
@@ -135,21 +129,8 @@ function playTicTacToe() {
       square.setAttribute("data-square-closed", "true");
 
       if (checkForWin(square)) {
-        winningSquares.forEach((square) => {
-          square.setAttribute("data-win", "true");
-        });
-
-        console.log(activePlayer.getPlayerNumber());
-        const children = document.querySelectorAll("[data-win='true'] > .icon");
-        if (activePlayer.getPlayerNumber() === 1) {
-          children.forEach((child) => {
-            child.style.fill = "var(--green)";
-          });
-        } else {
-          children.forEach((child) => {
-            child.style.stroke = "var(--green)";
-          });
-        }
+        setWinner();
+        endGame();
       } else {
         switchPlayer();
       }
@@ -161,6 +142,8 @@ function playTicTacToe() {
       square.removeAttribute("data-square-closed");
     });
   };
+
+  // Set player properties
 
   function setX() {
     const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -296,77 +279,76 @@ function playTicTacToe() {
     }
     return false;
   }
-}
 
-function setWinner() {
-  if (winningSquare.getAttribute("data-icon") === "1") {
-    const children = document.querySelectorAll("[data-win='true'] > .icon");
-    children.forEach((child) => {
-      child.style.fill = "var(--green)";
+  function setWinner() {
+    classes.toggle("winner");
+
+    winningSquares.forEach((square) => {
+      square.setAttribute("data-win", "true");
     });
-  } else {
-    children.forEach((child) => {
-      child.style.stroke = "var(--green)";
+
+    const children = document.querySelectorAll("[data-win='true'] > .icon");
+    if (activePlayer.getPlayerNumber() === 1) {
+      children.forEach((child) => {
+        child.style.fill = "var(--green)";
+      });
+    } else {
+      children.forEach((child) => {
+        child.style.stroke = "var(--green)";
+      });
+    }
+  }
+
+  //   End game
+
+  function endGame() {
+    squares.forEach((square) => {
+      square.setAttribute("data-square-closed", "true");
     });
   }
-}
 
-// Reset game
+  // Reset game
 
-function resetGame() {
-  winningPlayer = [];
+  function resetGame() {
+    classes.remove("winner");
 
-  statusIcon.classList.remove("winner");
+    players[0].resetName();
+    players[1].resetName();
 
-  players[0].resetName();
-  players[1].resetName();
+    squares.forEach((square) => {
+      if (square.getAttribute("data-square-closed")) {
+        const icons = document.querySelectorAll("div > .icon");
 
-  squares.forEach((square) => {
-    if (square.getAttribute("data-square-closed")) {
-      const icons = document.querySelectorAll("div > .icon");
+        icons.forEach((icon) => {
+          icon.style.opacity = "0";
+        });
 
-      icons.forEach((icon) => {
-        icon.style.opacity = "0";
-      });
+        if (square.getAttribute("data-icon")) {
+          square.removeAttribute("data-icon");
 
-      if (square.getAttribute("data-icon")) {
-        square.removeAttribute("data-icon");
+          setTimeout(() => {
+            const child = document.querySelector("div > .icon");
+            square.removeChild(child);
+            clearSquares();
 
-        setTimeout(() => {
-          const child = document.querySelector("div > .icon");
-          square.removeChild(child);
-          clearSquares();
+            winningSquares.forEach((square) => {
+              square.removeAttribute("data-win");
+            });
+            winningSquares = [];
+          }, 200);
+        }
 
-          const winningSquares = document.querySelectorAll("[data-win='true']");
-          winningSquares.forEach((winningSquare) => {
-            winningSquare.removeAttribute("data-win");
-          });
-        }, 200);
+        if (activePlayer.getPlayerNumber() === 2) {
+          activePlayer = players[0];
+          moveLeft();
+        }
       }
+    });
+  }
 
-      if (activePlayer.getPlayerNumber() === 2) {
-        activePlayer = players[0];
-        moveLeft();
-      } else {
-        activePlayer = players[0];
-        moveLeft();
-      }
-    }
-  });
-}
+  const resetButton = document.querySelector(".reset");
 
-const resetButton = document.querySelector(".reset");
-
-resetButton.addEventListener("click", resetGame);
-
-//   End game
-
-function endGame() {
-  statusIcon.classList.toggle("winner");
-
-  squares.forEach((square) => {
-    square.setAttribute("data-square-closed", "true");
-  });
+  resetButton.addEventListener("click", resetGame);
 }
 
 playTicTacToe();
