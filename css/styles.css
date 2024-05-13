@@ -40,7 +40,6 @@ header h1 {
   justify-content: space-between;
   align-items: flex-start;
   padding-bottom: var(--section-spacing);
-  /* border: 1px solid blue; */
 }
 
 .status-bar > p {
@@ -55,7 +54,7 @@ header h1 {
 .status-icon {
   position: absolute;
   width: 8px;
-  height: 18px;
+  height: 15px;
   background-color: var(--active-player);
   transition: 200ms;
 }
@@ -70,6 +69,16 @@ header h1 {
 
 .icon {
   transition: 300ms;
+}
+
+.winner {
+  background-color: var(--green);
+}
+
+main {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.25em;
 }
 
 main > div {
@@ -96,10 +105,31 @@ main > div:hover[data-square-closed="true"] {
   background: var(--main-color);
 }
 
-main {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.25em;
+footer {
+  display: flex;
+  justify-content: space-around;
+  margin-block-start: 1em;
+}
+
+footer > div button {
+  border: none;
+  padding-block: 0.75em;
+  padding-inline: 1em;
+  background: none;
+  color: var(--square-hover);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.5em;
+  font-weight: bold;
+  letter-spacing: 0.125em;
+  transition: text-underline-offset 275ms ease-in-out,
+    text-decoration-color 200ms;
+}
+
+footer > div button:hover {
+  color: var(--main-color);
+  text-decoration-color: var(--main-color);
+  text-underline-offset: 0.75em;
 }
 
 .x {
@@ -122,8 +152,4 @@ main {
 
 .right {
   rotate: -45deg;
-}
-
-button {
-  margin-block: 2em;
 }
