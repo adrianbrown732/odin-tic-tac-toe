@@ -103,6 +103,7 @@ main > div:hover {
 
 main > div:hover[data-square-closed="true"] {
   background: var(--main-color);
+  cursor: default;
 }
 
 footer {
@@ -122,6 +123,7 @@ footer > div button {
   text-underline-offset: 0.5em;
   font-weight: bold;
   letter-spacing: 0.125em;
+  cursor: pointer;
   transition: text-underline-offset 275ms ease-in-out,
     text-decoration-color 200ms;
 }

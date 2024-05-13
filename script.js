@@ -1,59 +1,103 @@
-function CreatePlayer(value) {
-  const playerName = `player${value}`;
-  const player = document.querySelector(`[data-player-name="${playerName}"]`);
-
-  const getValue = () => value;
-  const getPlayerNumber = () => value;
-
-  const setName = () => {
-    if (player.getAttribute("data-name-set")) return;
-    player.textContent = prompt(`Enter Player ${value} name: `);
-    player.setAttribute("data-name-set", "true");
-  };
-
-  const resetName = () => {
-    player.removeAttribute("data-name-set");
-  };
-
-  return {
-    getValue,
-    getPlayerNumber,
-    setName,
-    resetName,
-  };
-}
-
-function CreateSquareGrid(array) {
-  const board = [];
-  const rows = 3;
-  const cols = 3;
-  index = 0;
-
-  for (let i = 0; i < rows; i++) {
-    board[i] = [];
-    for (let j = 0; j < cols; j++) {
-      board[i].push(array[index]);
-      index++;
-    }
-  }
-  return board;
-}
-
-function setSquares(array) {
-  const rows = 3;
-  const cols = 3;
-  let index = 0;
-
-  for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) {
-      array[index].setAttribute("data-row", `${i}`);
-      array[index].setAttribute("data-col", `${j}`);
-      index++;
-    }
-  }
-}
-
 function playTicTacToe() {
+  // Functions
+  function CreatePlayer(value) {
+    const playerName = `player${value}`;
+    const player = document.querySelector(`[data-player-name="${playerName}"]`);
+
+    const getValue = () => value;
+    const getPlayerNumber = () => value;
+
+    const setName = () => {
+      if (player.getAttribute("data-name-set")) return;
+      player.textContent = prompt(`Enter Player ${value} name: `);
+      player.setAttribute("data-name-set", "true");
+    };
+
+    const resetName = () => {
+      player.removeAttribute("data-name-set");
+    };
+
+    return {
+      getValue,
+      getPlayerNumber,
+      setName,
+      resetName,
+    };
+  }
+
+  function CreateSquareGrid(array) {
+    const board = [];
+    const rows = 3;
+    const cols = 3;
+    index = 0;
+
+    for (let i = 0; i < rows; i++) {
+      board[i] = [];
+      for (let j = 0; j < cols; j++) {
+        board[i].push(array[index]);
+        index++;
+      }
+    }
+    return board;
+  }
+
+  function setSquares(array) {
+    const rows = 3;
+    const cols = 3;
+    let index = 0;
+
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        array[index].setAttribute("data-row", `${i}`);
+        array[index].setAttribute("data-col", `${j}`);
+        index++;
+      }
+    }
+  }
+
+  function endGame() {
+    squares.forEach((square) => {
+      square.setAttribute("data-square-closed", "true");
+    });
+  }
+
+  function resetGame() {
+    classes.remove("winner");
+
+    players[0].resetName();
+    players[1].resetName();
+
+    squares.forEach((square) => {
+      if (square.getAttribute("data-square-closed")) {
+        const icons = document.querySelectorAll("div > .icon");
+
+        icons.forEach((icon) => {
+          icon.style.opacity = "0";
+        });
+
+        if (square.getAttribute("data-icon")) {
+          square.removeAttribute("data-icon");
+
+          setTimeout(() => {
+            const child = document.querySelector("div > .icon");
+            square.removeChild(child);
+            clearSquares();
+
+            winningSquares.forEach((square) => {
+              square.removeAttribute("data-win");
+            });
+            winningSquares = [];
+          }, 200);
+        }
+
+        if (activePlayer.getPlayerNumber() === 2) {
+          activePlayer = players[0];
+          moveLeft();
+        }
+      }
+    });
+  }
+
   // Set players
 
   const players = [];
@@ -299,55 +343,9 @@ function playTicTacToe() {
     }
   }
 
-  //   End game
-
-  function endGame() {
-    squares.forEach((square) => {
-      square.setAttribute("data-square-closed", "true");
-    });
-  }
-
-  // Reset game
-
-  function resetGame() {
-    classes.remove("winner");
-
-    players[0].resetName();
-    players[1].resetName();
-
-    squares.forEach((square) => {
-      if (square.getAttribute("data-square-closed")) {
-        const icons = document.querySelectorAll("div > .icon");
-
-        icons.forEach((icon) => {
-          icon.style.opacity = "0";
-        });
-
-        if (square.getAttribute("data-icon")) {
-          square.removeAttribute("data-icon");
-
-          setTimeout(() => {
-            const child = document.querySelector("div > .icon");
-            square.removeChild(child);
-            clearSquares();
-
-            winningSquares.forEach((square) => {
-              square.removeAttribute("data-win");
-            });
-            winningSquares = [];
-          }, 200);
-        }
-
-        if (activePlayer.getPlayerNumber() === 2) {
-          activePlayer = players[0];
-          moveLeft();
-        }
-      }
-    });
-  }
+  //   Reset game
 
   const resetButton = document.querySelector(".reset");
-
   resetButton.addEventListener("click", resetGame);
 }
 
