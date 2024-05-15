@@ -1,5 +1,4 @@
 function playTicTacToe() {
-  // Functions
   function CreatePlayer(value) {
     const playerName = `player${value}`;
     const player = document.querySelector(`[data-player-name="${playerName}"]`);
@@ -9,7 +8,8 @@ function playTicTacToe() {
 
     const setName = () => {
       if (player.getAttribute("data-name-set")) return;
-      player.textContent = prompt(`Enter Player ${value} name: `);
+
+      player.textContent = prompt(`Enter Player ${value} name: `).toLowerCase();
       player.setAttribute("data-name-set", "true");
     };
 
@@ -25,6 +25,7 @@ function playTicTacToe() {
     };
   }
 
+  // Create a 3x3 grid to hold reference of each playable square for later comparison inside isWinConditionReached()
   function CreateSquareGrid(array) {
     const board = [];
     const rows = 3;
@@ -41,6 +42,7 @@ function playTicTacToe() {
     return board;
   }
 
+  // Assign individual row and column values to each playable square
   function setSquares(array) {
     const rows = 3;
     const cols = 3;
@@ -98,13 +100,12 @@ function playTicTacToe() {
     });
   }
 
-  // Set players
-
   const players = [];
   let winningSquares = [];
   const setNameButtonP1 = document.querySelector("[data-button='player1']");
   const setNameButtonP2 = document.querySelector("[data-button='player2']");
 
+  // Insert both players into an array in order to control the active player's turn
   for (let i = 0; i < 2; i++) {
     players[i] = CreatePlayer(i + 1);
   }
@@ -115,8 +116,6 @@ function playTicTacToe() {
   setNameButtonP2.addEventListener("click", () => {
     players[1].setName();
   });
-
-  //   Active player control
 
   let activePlayer = players[0];
 
@@ -148,12 +147,10 @@ function playTicTacToe() {
     }, 200);
   };
 
-  const switchPlayer = () => {
+  const switchActivePlayer = () => {
     activePlayer.getPlayerNumber() === 1 ? moveRight() : moveLeft();
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
   };
-
-  // Squares control
 
   const squares = document.querySelectorAll("[data-square]");
 
@@ -166,17 +163,17 @@ function playTicTacToe() {
       if (square.getAttribute("data-square-closed", "true")) return;
 
       activePlayer.getPlayerNumber() === 1
-        ? square.appendChild(setX())
-        : square.appendChild(setO());
+        ? square.appendChild(player1PlaysX())
+        : square.appendChild(player2PlaysO());
 
       square.setAttribute("data-icon", activePlayer.getValue());
       square.setAttribute("data-square-closed", "true");
 
-      if (checkForWin(square)) {
-        setWinner();
+      if (isWinConditionReached(square)) {
+        setWinningPlayer();
         endGame();
       } else {
-        switchPlayer();
+        switchActivePlayer();
       }
     });
   });
@@ -187,9 +184,7 @@ function playTicTacToe() {
     });
   };
 
-  // Set player properties
-
-  function setX() {
+  function player1PlaysX() {
     const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     icon.classList.toggle("x");
     icon.classList.toggle("icon");
@@ -224,7 +219,7 @@ function playTicTacToe() {
     return icon;
   }
 
-  function setO() {
+  function player2PlaysO() {
     const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     icon.classList.toggle("o");
     icon.classList.toggle("icon");
@@ -246,16 +241,12 @@ function playTicTacToe() {
     return icon;
   }
 
-  // Check win conditions
-
-  function checkForWin(element) {
-    const checkSquare = (index) => {
+  function isWinConditionReached(element) {
+    const isSquareEqualTo = (index) => {
       return element === squares[index];
     };
 
-    // Check if diagonal square was selected
-
-    const isWin = (index1, index2, index3) => {
+    const isDiagonalPathWinner = (index1, index2, index3) => {
       return (
         squares[index1].getAttribute("data-icon") ===
           squares[index2].getAttribute("data-icon") &&
@@ -264,86 +255,80 @@ function playTicTacToe() {
       );
     };
 
-    if (checkSquare(0) || checkSquare(4) || checkSquare(8)) {
-      if (isWin(0, 4, 8)) {
+    if (isSquareEqualTo(0) || isSquareEqualTo(4) || isSquareEqualTo(8)) {
+      if (isDiagonalPathWinner(0, 4, 8)) {
         winningSquares = [squares[0], squares[4], squares[8]];
         return true;
       }
     }
 
-    if (checkSquare(2) || checkSquare(4) || checkSquare(6)) {
-      if (isWin(2, 4, 6)) {
+    if (isSquareEqualTo(2) || isSquareEqualTo(4) || isSquareEqualTo(6)) {
+      if (isDiagonalPathWinner(2, 4, 6)) {
         winningSquares = [squares[2], squares[4], squares[6]];
         return true;
       }
     }
 
-    // Check row of selected square
+    const getRowOfSquare = () => element.getAttribute("data-row");
 
-    const getRow = () => element.getAttribute("data-row");
-
-    const isRowWin = () => {
+    const isRowPathWinner = () => {
       return (
-        squareGrid[getRow()][0].getAttribute("data-icon") ===
-          squareGrid[getRow()][1].getAttribute("data-icon") &&
-        squareGrid[getRow()][0].getAttribute("data-icon") ===
-          squareGrid[getRow()][2].getAttribute("data-icon")
+        squareGrid[getRowOfSquare()][0].getAttribute("data-icon") ===
+          squareGrid[getRowOfSquare()][1].getAttribute("data-icon") &&
+        squareGrid[getRowOfSquare()][0].getAttribute("data-icon") ===
+          squareGrid[getRowOfSquare()][2].getAttribute("data-icon")
       );
     };
 
-    if (isRowWin()) {
+    if (isRowPathWinner()) {
       winningSquares = [
-        squareGrid[getRow()][0],
-        squareGrid[getRow()][1],
-        squareGrid[getRow()][2],
+        squareGrid[getRowOfSquare()][0],
+        squareGrid[getRowOfSquare()][1],
+        squareGrid[getRowOfSquare()][2],
       ];
       return true;
     }
 
-    // Check column of selected square
+    const getColumnOfSquare = () => element.getAttribute("data-col");
 
-    const getCol = () => element.getAttribute("data-col");
-
-    const isColWin = () => {
+    const isColumnWinner = () => {
       return (
-        squareGrid[0][getCol()].getAttribute("data-icon") ===
-          squareGrid[1][getCol()].getAttribute("data-icon") &&
-        squareGrid[0][getCol()].getAttribute("data-icon") ===
-          squareGrid[2][getCol()].getAttribute("data-icon")
+        squareGrid[0][getColumnOfSquare()].getAttribute("data-icon") ===
+          squareGrid[1][getColumnOfSquare()].getAttribute("data-icon") &&
+        squareGrid[0][getColumnOfSquare()].getAttribute("data-icon") ===
+          squareGrid[2][getColumnOfSquare()].getAttribute("data-icon")
       );
     };
 
-    if (isColWin()) {
+    if (isColumnWinner()) {
       winningSquares = [
-        squareGrid[0][getCol()],
-        squareGrid[1][getCol()],
-        squareGrid[2][getCol()],
+        squareGrid[0][getColumnOfSquare()],
+        squareGrid[1][getColumnOfSquare()],
+        squareGrid[2][getColumnOfSquare()],
       ];
       return true;
     }
     return false;
   }
 
-  function setWinner() {
+  function setWinningPlayer() {
     classes.toggle("winner");
 
     winningSquares.forEach((square) => {
       square.setAttribute("data-win", "true");
     });
 
-    const children = document.querySelectorAll("[data-win='true'] > .icon");
+    const winningIcons = document.querySelectorAll("[data-win='true'] > .icon");
     if (activePlayer.getPlayerNumber() === 1) {
-      children.forEach((child) => {
-        child.style.fill = "var(--green)";
+      winningIcons.forEach((icon) => {
+        icon.style.fill = "var(--green)";
       });
     } else {
-      children.forEach((child) => {
-        child.style.stroke = "var(--green)";
+      winningIcons.forEach((icon) => {
+        icon.style.stroke = "var(--green)";
       });
     }
   }
-
-  //   Reset game
 
   const resetButton = document.querySelector(".reset");
   resetButton.addEventListener("click", resetGame);

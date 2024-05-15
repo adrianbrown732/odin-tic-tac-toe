@@ -34,6 +34,12 @@ header h1 {
   padding-bottom: var(--section-spacing);
 }
 
+header p {
+  font-family: "inter-variable", sans-serif;
+  font-variation-settings: "wght" 500, "slnt" 0;
+  letter-spacing: 0.0625em;
+}
+
 .status-bar {
   position: relative;
   display: flex;
@@ -124,14 +130,16 @@ footer > div button {
   font-weight: bold;
   letter-spacing: 0.125em;
   cursor: pointer;
-  transition: text-underline-offset 275ms ease-in-out,
-    text-decoration-color 200ms;
+  transition: text-underline-offset 300ms ease-in-out,
+    text-decoration-color 300ms;
 }
 
 footer > div button:hover {
   color: var(--main-color);
   text-decoration-color: var(--main-color);
   text-underline-offset: 0.75em;
+  transition: text-underline-offset 300ms ease-in-out,
+    text-decoration-color 200ms;
 }
 
 .x {
