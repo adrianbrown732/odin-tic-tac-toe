@@ -25,7 +25,7 @@ function playTicTacToe() {
     };
   }
 
-  // Create a 3x3 grid to hold reference of each playable square for later comparison inside isWinConditionReached()
+  // Create a 3x3 grid to hold reference of each playable square for later comparison inside isWinningSquare()
   function CreateSquareGrid(array) {
     const board = [];
     const rows = 3;
@@ -58,12 +58,17 @@ function playTicTacToe() {
   }
 
   function endGame() {
+    isGameOver = true;
     squares.forEach((square) => {
       square.setAttribute("data-square-closed", "true");
     });
   }
 
   function resetGame() {
+    isGameOver = false;
+
+    currentRound = 1;
+
     classes.remove("winner");
 
     players[0].resetName();
@@ -102,6 +107,8 @@ function playTicTacToe() {
 
   const players = [];
   let winningSquares = [];
+  let currentRound = 1;
+  let isGameOver = false;
   const setNameButtonP1 = document.querySelector("[data-button='player1']");
   const setNameButtonP2 = document.querySelector("[data-button='player2']");
 
@@ -169,11 +176,18 @@ function playTicTacToe() {
       square.setAttribute("data-icon", activePlayer.getValue());
       square.setAttribute("data-square-closed", "true");
 
-      if (isWinConditionReached(square)) {
-        setWinningPlayer();
-        endGame();
-      } else {
+      if (currentRound >= 3) {
+        if (isWinningSquare(square)) {
+          setWinningPlayer();
+          endGame();
+        }
+      }
+
+      if (!isGameOver) {
         switchActivePlayer();
+        if (activePlayer === players[0]) {
+          currentRound++;
+        }
       }
     });
   });
@@ -241,7 +255,7 @@ function playTicTacToe() {
     return icon;
   }
 
-  function isWinConditionReached(element) {
+  function isWinningSquare(element) {
     const isSquareEqualTo = (index) => {
       return element === squares[index];
     };
